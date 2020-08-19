@@ -1,0 +1,84 @@
+﻿@model IEnumerable<SUPORT_SYSTEM.Models.user>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="header-button">
+    <div class="header-column">
+        <h2>Edit / Create user</h2>
+    </div>
+    <div class="header-column">
+        <p align="right">
+            <button onclick="window.location.href = 'https://localhost:44343/users1/Create';">Create New</button>
+            <button onclick=" window.location.href = 'https://localhost:44343/users1/Deleted';">Deleted</button>
+        </p>
+    </div>
+</div>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Actions")
+        </th>
+        @*<th>
+            @Html.DisplayName("ID user")
+        </th>*@
+        <th>
+            @Html.DisplayName("Name")
+        </th>
+        <th>
+            @Html.DisplayName("Address")
+        </th>
+        <th>
+            @Html.DisplayName("City")
+        </th>
+        <th>
+            @Html.DisplayName("Country")
+        </th>
+        <th>
+            @Html.DisplayName("Phone")
+        </th>
+        <th>
+            @Html.DisplayName("Role")
+        </th>
+        <th>
+            @Html.DisplayName("Active?")
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+               <a href="https://localhost:44343/users1/Edit/@item.ID_user">Edit</a>
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.ID_user)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.first_name)
+                @Html.DisplayFor(modelItem => item.last_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.city)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.country.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.role.role1)
+            </td>
+            <td>
+                <input type="checkbox" id="vehicle1" name="vehicle1" checked=@item.active disabled="disabled">
+            </td>
+        </tr>
+    }
+</table>

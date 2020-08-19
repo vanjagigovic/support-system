@@ -1,0 +1,635 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SUPPORT_SYSTEMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="comments">
+          <Key>
+            <PropertyRef Name="ID_comments" />
+          </Key>
+          <Property Name="ID_comments" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="posted_by" Type="varchar" MaxLength="50" />
+          <Property Name="posted_on" Type="datetime" />
+          <Property Name="comment" Type="varchar" MaxLength="50" />
+          <Property Name="ID_parent" Type="int" />
+          <Property Name="ID_ticket" Type="int" />
+          <Property Name="ID_user" Type="int" />
+          <Property Name="username" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="country">
+          <Key>
+            <PropertyRef Name="ID_country" />
+          </Key>
+          <Property Name="ID_country" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="role">
+          <Key>
+            <PropertyRef Name="ID_user_role" />
+          </Key>
+          <Property Name="ID_user_role" Type="int" Nullable="false" />
+          <Property Name="role" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sections">
+          <Key>
+            <PropertyRef Name="ID_sections" />
+          </Key>
+          <Property Name="ID_sections" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="section_name" Type="varchar" MaxLength="50" />
+          <Property Name="description" Type="varchar" MaxLength="50" />
+          <Property Name="ID_user" Type="int" />
+          <Property Name="active" Type="bit" />
+        </EntityType>
+        <EntityType Name="severity">
+          <Key>
+            <PropertyRef Name="ID_severity" />
+          </Key>
+          <Property Name="ID_severity" Type="int" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="50" />
+          <Property Name="active" Type="bit" />
+        </EntityType>
+        <EntityType Name="status">
+          <Key>
+            <PropertyRef Name="ID_status" />
+          </Key>
+          <Property Name="ID_status" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="description" Type="varchar" MaxLength="50" />
+          <Property Name="active" Type="bit" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="ticket">
+          <Key>
+            <PropertyRef Name="ID_ticket" />
+          </Key>
+          <Property Name="ID_ticket" Type="int" Nullable="false" />
+          <Property Name="ID_suggestion" Type="int" />
+          <Property Name="title" Type="varchar" MaxLength="50" />
+          <Property Name="ID_status" Type="int" />
+          <Property Name="category" Type="varchar" MaxLength="50" />
+          <Property Name="ID_severity" Type="int" />
+          <Property Name="priority" Type="varchar" MaxLength="50" />
+          <Property Name="ID_user" Type="int" />
+          <Property Name="raised_on" Type="datetime" />
+          <Property Name="due_on" Type="datetime" />
+          <Property Name="resolved_on" Type="datetime" />
+          <Property Name="system_section" Type="varchar" MaxLength="50" />
+          <Property Name="steps_to_reproduce" Type="varchar" MaxLength="50" />
+          <Property Name="resolve_note" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="ID_user" />
+          </Key>
+          <Property Name="ID_user" Type="int" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="50" />
+          <Property Name="last_name" Type="varchar" MaxLength="50" />
+          <Property Name="address" Type="varchar" MaxLength="50" />
+          <Property Name="city" Type="varchar" MaxLength="50" />
+          <Property Name="ID_country" Type="int" />
+          <Property Name="phone" Type="varchar" MaxLength="50" />
+          <Property Name="ID_user_role" Type="int" />
+          <Property Name="active" Type="bit" />
+        </EntityType>
+        <Association Name="FK_comments_ticket">
+          <End Role="ticket" Type="Self.ticket" Multiplicity="0..1" />
+          <End Role="comments" Type="Self.comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ticket">
+              <PropertyRef Name="ID_ticket" />
+            </Principal>
+            <Dependent Role="comments">
+              <PropertyRef Name="ID_ticket" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_comments_user">
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="comments" Type="Self.comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID_user" />
+            </Principal>
+            <Dependent Role="comments">
+              <PropertyRef Name="ID_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sections_user">
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="sections" Type="Self.sections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID_user" />
+            </Principal>
+            <Dependent Role="sections">
+              <PropertyRef Name="ID_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ticket_severity">
+          <End Role="severity" Type="Self.severity" Multiplicity="0..1" />
+          <End Role="ticket" Type="Self.ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="severity">
+              <PropertyRef Name="ID_severity" />
+            </Principal>
+            <Dependent Role="ticket">
+              <PropertyRef Name="ID_severity" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ticket_status">
+          <End Role="status" Type="Self.status" Multiplicity="0..1" />
+          <End Role="ticket" Type="Self.ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="status">
+              <PropertyRef Name="ID_status" />
+            </Principal>
+            <Dependent Role="ticket">
+              <PropertyRef Name="ID_status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ticket_user">
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="ticket" Type="Self.ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID_user" />
+            </Principal>
+            <Dependent Role="ticket">
+              <PropertyRef Name="ID_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_user_country">
+          <End Role="country" Type="Self.country" Multiplicity="0..1" />
+          <End Role="user" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="ID_country" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="ID_country" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_user_role">
+          <End Role="role" Type="Self.role" Multiplicity="0..1" />
+          <End Role="user" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="role">
+              <PropertyRef Name="ID_user_role" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="ID_user_role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SUPPORT_SYSTEMModelStoreContainer">
+          <EntitySet Name="comments" EntityType="Self.comments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="country" EntityType="Self.country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sections" EntityType="Self.sections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="severity" EntityType="Self.severity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="status" EntityType="Self.status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ticket" EntityType="Self.ticket" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_comments_ticket" Association="Self.FK_comments_ticket">
+            <End Role="ticket" EntitySet="ticket" />
+            <End Role="comments" EntitySet="comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_comments_user" Association="Self.FK_comments_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="comments" EntitySet="comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sections_user" Association="Self.FK_sections_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="sections" EntitySet="sections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ticket_severity" Association="Self.FK_ticket_severity">
+            <End Role="severity" EntitySet="severity" />
+            <End Role="ticket" EntitySet="ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ticket_status" Association="Self.FK_ticket_status">
+            <End Role="status" EntitySet="status" />
+            <End Role="ticket" EntitySet="ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ticket_user" Association="Self.FK_ticket_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="ticket" EntitySet="ticket" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_country" Association="Self.FK_user_country">
+            <End Role="country" EntitySet="country" />
+            <End Role="user" EntitySet="user" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_role" Association="Self.FK_user_role">
+            <End Role="role" EntitySet="role" />
+            <End Role="user" EntitySet="user" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SUPPORT_SYSTEMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="comment">
+          <Key>
+            <PropertyRef Name="ID_comments" />
+          </Key>
+          <Property Name="ID_comments" Type="Int32" Nullable="false" />
+          <Property Name="posted_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="posted_on" Type="DateTime" Precision="3" />
+          <Property Name="comment1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID_parent" Type="Int32" />
+          <Property Name="ID_ticket" Type="Int32" />
+          <NavigationProperty Name="ticket" Relationship="SUPPORT_SYSTEMModel.FK_comments_ticket" FromRole="comment" ToRole="ticket" />
+          <Property Name="ID_user" Type="Int32" />
+          <NavigationProperty Name="user" Relationship="SUPPORT_SYSTEMModel.FK_comments_user" FromRole="comment" ToRole="user" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="country">
+          <Key>
+            <PropertyRef Name="ID_country" />
+          </Key>
+          <Property Name="ID_country" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="users" Relationship="Self.FK_user_country" FromRole="country" ToRole="user" />
+        </EntityType>
+        <EntityType Name="role">
+          <Key>
+            <PropertyRef Name="ID_user_role" />
+          </Key>
+          <Property Name="ID_user_role" Type="Int32" Nullable="false" />
+          <Property Name="role1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="users" Relationship="Self.FK_user_role" FromRole="role" ToRole="user" />
+        </EntityType>
+        <EntityType Name="section">
+          <Key>
+            <PropertyRef Name="ID_sections" />
+          </Key>
+          <Property Name="ID_sections" Type="Int32" Nullable="false" />
+          <Property Name="section_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID_user" Type="Int32" />
+          <NavigationProperty Name="user" Relationship="Self.FK_sections_user" FromRole="sections" ToRole="user" />
+          <Property Name="active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="severity">
+          <Key>
+            <PropertyRef Name="ID_severity" />
+          </Key>
+          <Property Name="ID_severity" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tickets" Relationship="Self.FK_ticket_severity" FromRole="severity" ToRole="ticket" />
+          <Property Name="active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="status">
+          <Key>
+            <PropertyRef Name="ID_status" />
+          </Key>
+          <Property Name="ID_status" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tickets" Relationship="Self.FK_ticket_status" FromRole="status" ToRole="ticket" />
+          <Property Name="active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="ticket">
+          <Key>
+            <PropertyRef Name="ID_ticket" />
+          </Key>
+          <Property Name="ID_ticket" Type="Int32" Nullable="false" />
+          <Property Name="ID_suggestion" Type="Int32" />
+          <Property Name="title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID_status" Type="Int32" />
+          <Property Name="category" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID_severity" Type="Int32" />
+          <Property Name="priority" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID_user" Type="Int32" />
+          <Property Name="raised_on" Type="DateTime" Precision="3" />
+          <Property Name="due_on" Type="DateTime" Precision="3" />
+          <Property Name="resolved_on" Type="DateTime" Precision="3" />
+          <Property Name="system_section" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="steps_to_reproduce" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="resolve_note" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="severity" Relationship="Self.FK_ticket_severity" FromRole="ticket" ToRole="severity" />
+          <NavigationProperty Name="status" Relationship="Self.FK_ticket_status" FromRole="ticket" ToRole="status" />
+          <NavigationProperty Name="user" Relationship="Self.FK_ticket_user" FromRole="ticket" ToRole="user" />
+          <NavigationProperty Name="comments" Relationship="SUPPORT_SYSTEMModel.FK_comments_ticket" FromRole="ticket" ToRole="comment" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="ID_user" />
+          </Key>
+          <Property Name="ID_user" Type="Int32" Nullable="false" />
+          <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID_country" Type="Int32" />
+          <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID_user_role" Type="Int32" />
+          <NavigationProperty Name="country" Relationship="Self.FK_user_country" FromRole="user" ToRole="country" />
+          <NavigationProperty Name="role" Relationship="Self.FK_user_role" FromRole="user" ToRole="role" />
+          <NavigationProperty Name="sections" Relationship="Self.FK_sections_user" FromRole="user" ToRole="sections" />
+          <NavigationProperty Name="tickets" Relationship="Self.FK_ticket_user" FromRole="user" ToRole="ticket" />
+          <Property Name="active" Type="Boolean" />
+          <NavigationProperty Name="comments" Relationship="SUPPORT_SYSTEMModel.FK_comments_user" FromRole="user" ToRole="comment" />
+        </EntityType>
+        <Association Name="FK_user_country">
+          <End Role="country" Type="Self.country" Multiplicity="0..1" />
+          <End Role="user" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="ID_country" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="ID_country" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_user_role">
+          <End Role="role" Type="Self.role" Multiplicity="0..1" />
+          <End Role="user" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="role">
+              <PropertyRef Name="ID_user_role" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="ID_user_role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_sections_user">
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="sections" Type="Self.section" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID_user" />
+            </Principal>
+            <Dependent Role="sections">
+              <PropertyRef Name="ID_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ticket_severity">
+          <End Role="severity" Type="Self.severity" Multiplicity="0..1" />
+          <End Role="ticket" Type="Self.ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="severity">
+              <PropertyRef Name="ID_severity" />
+            </Principal>
+            <Dependent Role="ticket">
+              <PropertyRef Name="ID_severity" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ticket_status">
+          <End Role="status" Type="Self.status" Multiplicity="0..1" />
+          <End Role="ticket" Type="Self.ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="status">
+              <PropertyRef Name="ID_status" />
+            </Principal>
+            <Dependent Role="ticket">
+              <PropertyRef Name="ID_status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ticket_user">
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="ticket" Type="Self.ticket" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID_user" />
+            </Principal>
+            <Dependent Role="ticket">
+              <PropertyRef Name="ID_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SUPPORT_SYSTEMEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="comments" EntityType="Self.comment" />
+          <EntitySet Name="countries" EntityType="Self.country" />
+          <EntitySet Name="roles" EntityType="Self.role" />
+          <EntitySet Name="sections" EntityType="Self.section" />
+          <EntitySet Name="severities" EntityType="Self.severity" />
+          <EntitySet Name="status" EntityType="Self.status" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="tickets" EntityType="Self.ticket" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="FK_user_country" Association="Self.FK_user_country">
+            <End Role="country" EntitySet="countries" />
+            <End Role="user" EntitySet="users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_role" Association="Self.FK_user_role">
+            <End Role="role" EntitySet="roles" />
+            <End Role="user" EntitySet="users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_sections_user" Association="Self.FK_sections_user">
+            <End Role="user" EntitySet="users" />
+            <End Role="sections" EntitySet="sections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ticket_severity" Association="Self.FK_ticket_severity">
+            <End Role="severity" EntitySet="severities" />
+            <End Role="ticket" EntitySet="tickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ticket_status" Association="Self.FK_ticket_status">
+            <End Role="status" EntitySet="status" />
+            <End Role="ticket" EntitySet="tickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ticket_user" Association="Self.FK_ticket_user">
+            <End Role="user" EntitySet="users" />
+            <End Role="ticket" EntitySet="tickets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_comments_ticket" Association="SUPPORT_SYSTEMModel.FK_comments_ticket">
+            <End Role="ticket" EntitySet="tickets" />
+            <End Role="comment" EntitySet="comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_comments_user" Association="SUPPORT_SYSTEMModel.FK_comments_user">
+            <End Role="user" EntitySet="users" />
+            <End Role="comment" EntitySet="comments" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_comments_ticket">
+          <End Type="SUPPORT_SYSTEMModel.ticket" Role="ticket" Multiplicity="0..1" />
+          <End Type="SUPPORT_SYSTEMModel.comment" Role="comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ticket">
+              <PropertyRef Name="ID_ticket" />
+            </Principal>
+            <Dependent Role="comment">
+              <PropertyRef Name="ID_ticket" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_comments_user">
+          <End Type="SUPPORT_SYSTEMModel.user" Role="user" Multiplicity="0..1" />
+          <End Type="SUPPORT_SYSTEMModel.comment" Role="comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID_user" />
+            </Principal>
+            <Dependent Role="comment">
+              <PropertyRef Name="ID_user" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SUPPORT_SYSTEMModelStoreContainer" CdmEntityContainer="SUPPORT_SYSTEMEntities">
+          <EntitySetMapping Name="comments">
+            <EntityTypeMapping TypeName="SUPPORT_SYSTEMModel.comment">
+              <MappingFragment StoreEntitySet="comments">
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="ID_user" ColumnName="ID_user" />
+                <ScalarProperty Name="ID_ticket" ColumnName="ID_ticket" />
+                <ScalarProperty Name="ID_parent" ColumnName="ID_parent" />
+                <ScalarProperty Name="comment1" ColumnName="comment" />
+                <ScalarProperty Name="ID_comments" ColumnName="ID_comments" />
+                <ScalarProperty Name="posted_by" ColumnName="posted_by" />
+                <ScalarProperty Name="posted_on" ColumnName="posted_on" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="countries">
+            <EntityTypeMapping TypeName="SUPPORT_SYSTEMModel.country">
+              <MappingFragment StoreEntitySet="country">
+                <ScalarProperty Name="ID_country" ColumnName="ID_country" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="roles">
+            <EntityTypeMapping TypeName="SUPPORT_SYSTEMModel.role">
+              <MappingFragment StoreEntitySet="role">
+                <ScalarProperty Name="ID_user_role" ColumnName="ID_user_role" />
+                <ScalarProperty Name="role1" ColumnName="role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sections">
+            <EntityTypeMapping TypeName="SUPPORT_SYSTEMModel.section">
+              <MappingFragment StoreEntitySet="sections">
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="ID_sections" ColumnName="ID_sections" />
+                <ScalarProperty Name="section_name" ColumnName="section_name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="ID_user" ColumnName="ID_user" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="severities">
+            <EntityTypeMapping TypeName="SUPPORT_SYSTEMModel.severity">
+              <MappingFragment StoreEntitySet="severity">
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="ID_severity" ColumnName="ID_severity" />
+                <ScalarProperty Name="title" ColumnName="title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="status">
+            <EntityTypeMapping TypeName="SUPPORT_SYSTEMModel.status">
+              <MappingFragment StoreEntitySet="status">
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="ID_status" ColumnName="ID_status" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SUPPORT_SYSTEMModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tickets">
+            <EntityTypeMapping TypeName="SUPPORT_SYSTEMModel.ticket">
+              <MappingFragment StoreEntitySet="ticket">
+                <ScalarProperty Name="ID_ticket" ColumnName="ID_ticket" />
+                <ScalarProperty Name="ID_suggestion" ColumnName="ID_suggestion" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="ID_status" ColumnName="ID_status" />
+                <ScalarProperty Name="category" ColumnName="category" />
+                <ScalarProperty Name="ID_severity" ColumnName="ID_severity" />
+                <ScalarProperty Name="priority" ColumnName="priority" />
+                <ScalarProperty Name="ID_user" ColumnName="ID_user" />
+                <ScalarProperty Name="raised_on" ColumnName="raised_on" />
+                <ScalarProperty Name="due_on" ColumnName="due_on" />
+                <ScalarProperty Name="resolved_on" ColumnName="resolved_on" />
+                <ScalarProperty Name="system_section" ColumnName="system_section" />
+                <ScalarProperty Name="steps_to_reproduce" ColumnName="steps_to_reproduce" />
+                <ScalarProperty Name="resolve_note" ColumnName="resolve_note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="SUPPORT_SYSTEMModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="ID_user" ColumnName="ID_user" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="ID_country" ColumnName="ID_country" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="ID_user_role" ColumnName="ID_user_role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
